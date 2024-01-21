@@ -1,0 +1,11 @@
+.navBar {
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	--adm-color-primary: #21b97a;
+}
+
+.navBar i {
+	font-size: 22px;
+	font-weight: 500;
+}
