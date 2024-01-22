@@ -4,7 +4,10 @@ import service from "@/utils/request";
 const getSwiperData = () => {
     return service("/home/swiper", { method: "get" })
 }
+// 获取租房小组模块数据
+const getRenralGroupData = (areaid: string) => {
+    return service(`/home/groups/?id=${areaid}`, { method: "get" })
+}
 
 
-
-export { getSwiperData }
+export { getSwiperData, getRenralGroupData }

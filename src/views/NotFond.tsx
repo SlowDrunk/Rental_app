@@ -1,6 +1,6 @@
 import React from 'react'
-import { ErrorBlock, Button } from 'antd-mobile'
-import { Link, NavLink } from 'react-router-dom'
+import { ErrorBlock } from 'antd-mobile'
+import { Link } from 'react-router-dom'
 
 export default function NotFond() {
     return (

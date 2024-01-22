@@ -13,6 +13,7 @@
     "antd-mobile": "^5.34.0",
     "antd-mobile-icons": "^0.3.0",
     "axios": "^1.6.5",
+    "dart-sass": "^1.25.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
-    "@types/testing-library__jest-dom": "^6.0.0"
+    "@types/testing-library__jest-dom": "^6.0.0",
+    "sass-loader": "^14.0.0"
   }
 }

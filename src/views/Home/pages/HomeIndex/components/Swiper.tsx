@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Swiper, Toast } from 'antd-mobile'
 import { getSwiperData } from '@/api'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
+
+
+// 引入底部当行所需要的静态资源
+import nav1 from '@/assets/images/nav-1.png'
+import nav2 from '@/assets/images/nav-2.png'
+import nav3 from '@/assets/images/nav-3.png'
+import nav4 from '@/assets/images/nav-4.png'
 
 
 interface SwiperItem {
@@ -8,9 +16,13 @@ interface SwiperItem {
     imgSrc: string,
     alt: string
 }
-
+/**
+ * 渲染swiper相关dom
+ *
+ * @param {Array} data - 后端获取到的swiper列表数据
+ * @returns {HTMLElement} 
+ */
 const swiperItemRender = (data: SwiperItem[]) => {
-    console.log(data)
     const dom = data.map((item) => (
         <Swiper.Item key={item.id}>
             <div>
@@ -20,20 +32,53 @@ const swiperItemRender = (data: SwiperItem[]) => {
     ))
     return dom
 }
+/**
+ * 渲染轮播图底部导航
+ * @param {NavigateFunction} navigate - 路由跳转实例
+ * @returns {HTMLElement} 
+ * 
+ */
+const homeNavRender = (navigate: NavigateFunction) => {
+    const imgList = [{ imgUrl: nav1, text: '整租', routerPath: '/findHouse' }, { imgUrl: nav2, text: '合租', routerPath: '/findHouse' }, { imgUrl: nav3, text: '地图找房', routerPath: '/map' }, { imgUrl: nav4, text: '去出租', routerPath: '/findHouse' }]
+    return imgList.map(img => {
+        return (
+            <div className='flex flex-col items-center' key={img.text} onClick={() => navigate(img.routerPath)}>
+                <img className='w-[48px]' src={img.imgUrl} alt="nav" />
+                <span className='text-[13px] mt-[7px]'>{img.text}</span>
+            </div>
+        )
+    })
+}
 export default function HomeSwiper() {
     const [images, setImages] = useState<SwiperItem[]>([])
+    const navigate = useNavigate()
+
     useEffect(() => {
         getSwiperData().then(res => {
             if (res.status >= 400) return
             setImages(res.data.body)
+        }).catch((err) => {
+            Toast.show({
+                icon: 'fail',
+                content: '数据获取出错了',
+            })
+            console.log(err)
         })
     }, [])
     return (
-        <Swiper
-            loop
-            autoplay
-        >
-            {swiperItemRender(images)}
-        </Swiper>
+        <div>
+            {images.length > 0 ? <Swiper
+                loop
+                autoplay
+            >
+                {swiperItemRender(images)}
+            </Swiper> : <div>
+                暂无数据
+            </div>}
+
+            <div className='flex flex-row w-full justify-around px-[10px] mt-[10px]'>
+                {homeNavRender(navigate)}
+            </div>
+        </div>
     )
 }
