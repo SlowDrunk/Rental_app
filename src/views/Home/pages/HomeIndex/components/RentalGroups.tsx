@@ -36,8 +36,10 @@ const GroupItemRender = (data: GroupsItem[]) => {
 
 export default function RentalGroups() {
     const [groupsData, setGroupsData] = useState<GroupsItem[]>([])
+
     useEffect(() => {
-        getRenralGroupData('AREA|88cff55c-aaa4-e2e0').then(res => {
+        // @ts-ignore
+        getRenralGroupData(JSON.parse(localStorage.getItem('cityInfo')).value).then(res => {
             setGroupsData(res.data.body)
         }).catch((err) => {
             Toast.show({
@@ -50,8 +52,8 @@ export default function RentalGroups() {
     return (
         <div className='bg-[#ececec] p-[10px]'>
             <div className='flex flex-row justify-between items-center  w-full py-[6px] px-[10px]'>
-                <div className='text-[16px] font-semibold'>租房小组</div>
-                <div className='text-[14px] text-[#ccc]'>更多</div>
+                <div className='text-[14px] font-semibold'>租房小组</div>
+                <div className='text-[12px] text-[#ccc]'>更多</div>
             </div>
             <div>
                 <Grid columns={2} gap={8}>

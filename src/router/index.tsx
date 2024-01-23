@@ -4,6 +4,7 @@ import Citylist from '@/views/Citylist'
 import News from '@/views/Home/pages/News'
 import NotFond from '@/views/NotFond'
 import HomeIndex from '@/views/Home/pages/HomeIndex'
+import MapDom from '@/views/Map'
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -24,10 +25,21 @@ export const router = createBrowserRouter([
             { path: 'personalCenter', element: <div>我的</div> },
         ]
     },
+    // 城市列表
     {
         path: '/citylist',
         element: <Citylist />,
-    }, {
+    },
+    // 搜索列表
+    {
+        path: '/search',
+        element: <div>搜索列表</div>,
+    },
+    {
+        path: '/map',
+        element: <MapDom></MapDom>,
+    },
+    {
         path: "*",
         element: <NotFond></NotFond>,
     }

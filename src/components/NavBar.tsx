@@ -42,7 +42,7 @@ export default function NavBar() {
     }, [currentRouter])
     const [activeKey, setActiveKey] = useState(useLocation().pathname)
     return (
-        <div className='navBar'>
+        <div className='navBar bg-white'>
             <TabBar activeKey={activeKey} onChange={(val) => { routerJump(val) }} >
                 {tabs.map(item => (
                     <TabBar.Item key={item.key} icon={item.icon} title={item.title}>

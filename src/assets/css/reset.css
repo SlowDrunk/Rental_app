@@ -131,3 +131,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* 有关百度地图的样式 */
+html,
+#root,
+.App {
+	height: 100%;
+}
