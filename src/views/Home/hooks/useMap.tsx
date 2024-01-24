@@ -11,7 +11,13 @@ type CityInfo = {
     code: number;
 };
 
-export function useMap() {
+interface MapFunctions {
+    createMap: () => void;
+    getCityInfo: () => Promise<CityInfo | undefined>;
+    setCurrentCity: (city: string) => void;
+}
+
+export function useMap(): MapFunctions {
     // map实例
     const createMap = () => {
         const mapObj = new window.BMap.Map('mapContainer');
@@ -19,16 +25,33 @@ export function useMap() {
         mapObj.enableContinuousZoom();
         mapObj.enableScrollWheelZoom();
     }
-    // 获取城市数据
-    const getCityInfo = (): Promise<CityInfo | undefined> => {
-        return new Promise((resolve) => {
-            const curCity = new BMap.LocalCity();
-            curCity.get(async (res: CityInfo) => {
-                const currentCityInfo = await getCurrentCity(res.name);
-                resolve(currentCityInfo);
+    // 获取当前定位城市数据
+    const getCityInfo = async (): Promise<CityInfo | undefined> => {
+        const localCity = localStorage.getItem('cityInfo');
+        if (!localCity) {
+            return new Promise((resolve, reject) => {
+                const curCity = new BMap.LocalCity()
+                curCity.get(async res => {
+                    try {
+                        const result = await getCurrentCity(res.name)
+                        // 进行本地存储
+                        localStorage.setItem('cityInfo', JSON.stringify(result.data.body))
+                        resolve(result.data.body)
+                    } catch (err) {
+                        reject(err)
+                    }
+                })
             });
-        });
-    };
+        } else {
+            return new Promise(resolve => resolve(JSON.parse(localCity)))
+        }
+    }
+    // 设置当前城市
+    const setCurrentCity = (city: any) => {
+        if (!localStorage.getItem('cityInfo')) {
+            localStorage.setItem('cityInfo', JSON.stringify({ city: city }))
+        }
+    }
     getCityInfo()
-    return { getCityInfo, createMap };
+    return { getCityInfo, createMap, setCurrentCity };
 }

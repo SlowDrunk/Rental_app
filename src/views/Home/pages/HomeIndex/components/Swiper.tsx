@@ -53,6 +53,7 @@ const homeNavRender = (navigate: NavigateFunction) => {
 
 export default function HomeSwiper() {
     const [images, setImages] = useState<SwiperItem[]>([])
+    const [curCity, setCurCity] = useState<any>({})
     const navigate = useNavigate()
     const { getCityInfo } = useMap()
 
@@ -67,8 +68,9 @@ export default function HomeSwiper() {
             })
             console.log(err)
         })
-        // @ts-ignore
-        getCityInfo().then(res => { if (res) { localStorage.setItem('cityInfo', JSON.stringify(res.data.body)) } }).catch(err => console.log(err))
+        getCityInfo().then((res) => {
+            setCurCity(res)
+        })
     }, [])
     return (
         <div className='relative'>
@@ -85,7 +87,7 @@ export default function HomeSwiper() {
                     <div className='flex flex-row items-center '>
                         <div className='p-[.375rem]' style={{ borderRight: '.0625rem solid #eeeeee' }} onClick={() => navigate('/citylist')}>
                             {/* @ts-ignore */}
-                            <span className='text-[.875rem] text-[#666666] font-medium mr-1'>{JSON.parse(localStorage.getItem('cityInfo')).label}</span>
+                            <span className='text-[.875rem] text-[#666666] font-medium mr-1'>{curCity.label}</span>
                             <i className='iconfont icon-arrow text-[#cccccc] text-[.75rem]'></i>
                         </div>
                         <div className='px-[.625rem] flex flex-row items-center' onClick={() => navigate('/search')}>

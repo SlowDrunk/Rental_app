@@ -1,4 +1,5 @@
 import { getRenralNewsData } from '@/api'
+import { useMap } from '@/views/Home/hooks/useMap'
 import { Toast } from 'antd-mobile'
 import React, { useEffect, useState } from 'react'
 

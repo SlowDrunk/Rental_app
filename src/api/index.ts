@@ -16,6 +16,13 @@ const getRenralNewsData = (areaid: string) => {
 const getCurrentCity = (name: string) => {
     return service(`/area/info/?name=${name}`, { method: "get" })
 }
+// 获取城市列表
+const getCityList = (level: number) => {
+    return service(`/area/city/?level=${level}`, { method: "get" })
+}
+// 获取热门城市
+const getHotCity = () => {
+    return service(`/area/hot`, { method: "get" })
+}
 
-
-export { getSwiperData, getRenralGroupData, getRenralNewsData, getCurrentCity }
+export { getSwiperData, getRenralGroupData, getRenralNewsData, getCurrentCity, getCityList, getHotCity }
