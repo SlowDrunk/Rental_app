@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '@/assets/css/reset.css';
 import '@/assets/css/index.css';
+import 'react-virtualized/styles.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
