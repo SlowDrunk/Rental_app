@@ -1,5 +1,7 @@
 // @ts-nocheck
 import { getCurrentCity } from "@/api";
+import { Toast } from 'antd-mobile'
+import { useNavigate } from "react-router-dom";
 
 type CityInfo = {
     center: {
@@ -14,10 +16,11 @@ type CityInfo = {
 interface MapFunctions {
     createMap: () => void;
     getCityInfo: () => Promise<CityInfo | undefined>;
-    setCurrentCity: (city: string) => void;
+    setCurrentCity: (city: any) => void;
 }
 
 export function useMap(): MapFunctions {
+    const navigate = useNavigate();
     // map实例
     const createMap = () => {
         const mapObj = new window.BMap.Map('mapContainer');
@@ -47,9 +50,16 @@ export function useMap(): MapFunctions {
         }
     }
     // 设置当前城市
-    const setCurrentCity = (city: any) => {
-        if (!localStorage.getItem('cityInfo')) {
-            localStorage.setItem('cityInfo', JSON.stringify({ city: city }))
+    const setCurrentCity = ({ label, value }: any) => {
+        const hasDataCityList = ['北京', '上海', '广州', '深圳']
+        if (hasDataCityList.includes(label)) {
+            localStorage.setItem('cityInfo', JSON.stringify({ label, value }))
+            navigate(-1)
+        } else {
+            Toast.show({
+                icon: 'fail',
+                content: '当前城市暂无房源数据，请重新选择',
+            })
         }
     }
     getCityInfo()

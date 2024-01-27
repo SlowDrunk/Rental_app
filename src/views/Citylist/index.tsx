@@ -1,8 +1,10 @@
 import { NavBar } from 'antd-mobile'
-import React, { useEffect, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getCityList, getHotCity } from '@/api'
 import { List, AutoSizer } from 'react-virtualized'
+import { FireFill } from 'antd-mobile-icons'
+import { useMap } from '../Home/hooks/useMap'
 
 interface CityItem {
   label: string;
@@ -61,16 +63,20 @@ const formatterLetter = (letter: string) => {
       return letter.toUpperCase()
   }
 }
-
-function swapArrayElements(arr:any[], index1:number, index2:number) {
+// TODO:交换数组
+function swapArrayElements(arr: any[], index1: number, index2: number) {
   arr[index1] = arr.splice(index2, 1, arr[index1])[0];
   return arr;
 }
+
+
 
 export default function Citylist() {
   const navigate = useNavigate()
   const [cityList, setCityList] = useState<CityList>({})
   const [cityIndex, setCityIndex] = useState<string[]>([])
+  const virtuslList = createRef<any>()
+  const { setCurrentCity } = useMap()
   // TODO:获取城市列表数据
   useEffect(() => {
     getCityList(1).then(async (res) => {
@@ -83,10 +89,11 @@ export default function Citylist() {
       })
     })
   }, [])
-
+  // TODO:动态计算每一个城市名称高度
   const getRowHeight = ({ index }: any) => {
     return 36 + cityList[cityIndex[index]].length * 50
   }
+  // TODO:渲染城市列表
   function rowRenderer({
     key,
     index,
@@ -100,7 +107,9 @@ export default function Citylist() {
         {
           cityList[cityIndex[index]]?.map((item: CityItem) => {
             return (
-              <div key={item.value} className='w-full h-[50px] px-[15px] text-[16px] text-[#333333] bg-white cursor-pointer leading-[50px]' style={{ borderBottom: '1px solid #ececec' }}>{item.label}</div>
+              <div key={item.value} className='w-full h-[50px] px-[15px] text-[16px] text-[#333333] bg-white cursor-pointer leading-[50px]' style={{ borderBottom: '1px solid #ececec' }} onClick={() => {
+                setCurrentCity(item)
+              }}>{item.label}</div>
             )
           })
         }
@@ -108,6 +117,29 @@ export default function Citylist() {
     );
   }
 
+  // TODO:索引点击事件
+  const handleIndexClick = (index: number) => {
+    if (virtuslList.current) {
+      virtuslList.current.scrollToRow(index)
+    }
+  }
+  // TODO:渲染右侧索引列表
+  const renderIndexList = (cityIndex: string[]) => {
+    return cityIndex.map((letter, index) => {
+      return (
+        <li className='flex-1' key={letter} >
+          <span onClick={() => handleIndexClick(index)} className='w-[15px] h-[15px] rounded-[50%]  flex justify-center items-center' style={activeCityIndex === index ? { color: '#fff', background: '#21b97a' } : {}}>{letter === 'hot' ? <FireFill /> : letter.toLocaleUpperCase()}</span>
+        </li>
+      )
+    })
+  }
+  const [activeCityIndex, setActiveCityIndex] = useState<number>(0)
+  // TODO:滚动列表激活右侧索引
+  const onRowsRendered = ({ startIndex }: any) => {
+    if (startIndex !== activeCityIndex) {
+      setActiveCityIndex(startIndex)
+    }
+  }
 
   return (
     <div className='h-full'>
@@ -126,14 +158,22 @@ export default function Citylist() {
       </div>
       <AutoSizer className='mt-[36px]'>{({ height, width }) =>
         <List
+          ref={virtuslList}
           width={width}
           height={height}
           rowCount={Object.keys(cityList).length}
           rowHeight={getRowHeight}
           rowRenderer={rowRenderer}
+          onRowsRendered={onRowsRendered}
+          scrollToAlignment='start'
         />
       }
       </AutoSizer>
+      <div className='absolute right-[5px]  h-[90%]   pt-[20px]'>
+        <ul className='flex flex-col h-full justify-between  text-center'>
+          {renderIndexList(cityIndex)}
+        </ul>
+      </div>
     </div>
   )
 }
