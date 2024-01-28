@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Swiper, Toast } from 'antd-mobile'
 import { getSwiperData } from '@/api'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
-import { useMap } from '@/views/Home/hooks/useMap'
+import { useMap } from '@/hooks/useMap'
 
 
 // 引入底部当行所需要的静态资源

@@ -24,5 +24,13 @@ const getCityList = (level: number) => {
 const getHotCity = () => {
     return service(`/area/hot`, { method: "get" })
 }
+// 获取区域下的房源信息
+const getAreaHouses = (areaId: string) => {
+    return service(`/area/map/?id=${areaId}`, { method: 'get' })
+}
+// 获取小区下的房源信息
+const getCommunityHouses = (communityId: string) => {
+    return service(`/houses?cityId=${communityId}`, { method: 'get' })
+}
 
-export { getSwiperData, getRenralGroupData, getRenralNewsData, getCurrentCity, getCityList, getHotCity }
+export { getSwiperData, getRenralGroupData, getRenralNewsData, getCurrentCity, getCityList, getHotCity, getAreaHouses, getCommunityHouses }

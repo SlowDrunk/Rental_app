@@ -1,10 +1,9 @@
-import { NavBar } from 'antd-mobile'
 import React, { createRef, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { getCityList, getHotCity } from '@/api'
 import { List, AutoSizer } from 'react-virtualized'
 import { FireFill } from 'antd-mobile-icons'
-import { useMap } from '../Home/hooks/useMap'
+import { useMap } from '../../hooks/useMap'
+import NavHeader from '@/components/NavHeader'
 
 interface CityItem {
   label: string;
@@ -72,7 +71,6 @@ function swapArrayElements(arr: any[], index1: number, index2: number) {
 
 
 export default function Citylist() {
-  const navigate = useNavigate()
   const [cityList, setCityList] = useState<CityList>({})
   const [cityIndex, setCityIndex] = useState<string[]>([])
   const virtuslList = createRef<any>()
@@ -145,16 +143,7 @@ export default function Citylist() {
     <div className='h-full'>
       {/* 顶部nav */}
       <div className='fixed top-0 w-full z-20'>
-        <NavBar
-          style={{
-            '--height': '36px',
-            '--border-bottom': '1px #eee solid',
-            background: '#ececec'
-          }}
-          onBack={() => navigate(-1)}
-        >
-          城市选择
-        </NavBar>
+      <NavHeader header={'城市列表'}></NavHeader>
       </div>
       <AutoSizer className='mt-[36px]'>{({ height, width }) =>
         <List
