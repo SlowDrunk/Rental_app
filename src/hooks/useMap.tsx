@@ -91,8 +91,14 @@ export function useMap() {
                 mapObj.clearOverlays()
             }, 0)
             try {
+                Toast.show({
+                    icon: 'loading',
+                    content: '加载中…',
+                    duration: 0,
+                })
                 const houseList = await getAreaHouses(label.id)
                 createLabel(houseList.data.body, '', mapObj)
+                Toast.clear()
             } catch (err) {
                 console.error(err)
             }
@@ -124,8 +130,14 @@ export function useMap() {
                     mapObj.addControl(new window.BMap.NavigationControl({ anchor: window.BMAP_ANCHOR_BOTTOM_RIGHT }));
                     // 创建label
                     try {
+                        Toast.show({
+                            icon: 'loading',
+                            content: '加载中…',
+                            duration: 0,
+                        })
                         const houseList = await getAreaHouses(value)
                         createLabel(houseList.data.body, '', mapObj)
+                        Toast.clear()
                     } catch (err) {
                         console.error(err)
                     }
@@ -166,11 +178,10 @@ export function useMap() {
             navigate(-1)
         } else {
             Toast.show({
-                icon: 'fail',
-                content: '当前城市暂无房源数据，请重新选择',
+                content: '该城市暂无房源哦~',
+                maskClickable: false,
             })
         }
     }
-    getCityInfo()
     return { getCityInfo, createMap, setCurrentCity, showHouseList, houese, setShowHouseList };
 }

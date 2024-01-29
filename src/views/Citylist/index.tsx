@@ -4,6 +4,7 @@ import { List, AutoSizer } from 'react-virtualized'
 import { FireFill } from 'antd-mobile-icons'
 import { useMap } from '../../hooks/useMap'
 import NavHeader from '@/components/NavHeader'
+import { Toast } from 'antd-mobile'
 
 interface CityItem {
   label: string;
@@ -77,6 +78,11 @@ export default function Citylist() {
   const { setCurrentCity } = useMap()
   // TODO:获取城市列表数据
   useEffect(() => {
+    Toast.show({
+      icon: 'loading',
+      content: '加载中…',
+      duration: 0,
+    })
     getCityList(1).then(async (res) => {
       const { newCityList, cityIndex } = groupCitiesByInitial(res.data.body)
       getHotCity().then((res) => {
@@ -84,6 +90,7 @@ export default function Citylist() {
         cityIndex.unshift('hot')
         setCityList(newCityList)
         setCityIndex(swapArrayElements(cityIndex, 0, 1))
+        Toast.clear()
       })
     })
   }, [])
@@ -143,7 +150,7 @@ export default function Citylist() {
     <div className='h-full'>
       {/* 顶部nav */}
       <div className='fixed top-0 w-full z-20'>
-      <NavHeader header={'城市列表'}></NavHeader>
+        <NavHeader header={'城市列表'}></NavHeader>
       </div>
       <AutoSizer className='mt-[36px]'>{({ height, width }) =>
         <List
