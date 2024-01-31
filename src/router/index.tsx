@@ -4,6 +4,7 @@ import Citylist from '@/views/Citylist'
 import News from '@/views/Home/pages/News'
 import NotFond from '@/views/NotFond'
 import HomeIndex from '@/views/Home/pages/HomeIndex'
+import HouseList from '@/views/Home/pages/HouseList'
 import MapDom from '@/views/Map'
 export const router = createBrowserRouter([
     {
@@ -16,7 +17,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "findHouse",
-                element: <div>找房</div>,
+                element: <HouseList></HouseList>,
             },
             {
                 path: "informations",
