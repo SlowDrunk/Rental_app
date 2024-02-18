@@ -3,6 +3,7 @@ import { Swiper, Toast } from 'antd-mobile'
 import { getSwiperData } from '@/api'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
 import { useMap } from '@/hooks/useMap'
+import SearchNav from '@/components/SearchNav'
 
 
 // 引入底部当行所需要的静态资源
@@ -82,24 +83,7 @@ export default function HomeSwiper() {
             </Swiper> : <div>
                 暂无数据
             </div>}
-            <div className='absolute w-full h-[2.375rem] flex flex-row gap-[.8125rem] top-[1rem] px-[1.25rem]'>
-                <div className='flex flex-row bg-white flex-1 rounded-md'>
-                    <div className='flex flex-row items-center '>
-                        <div className='p-[.375rem]' style={{ borderRight: '.0625rem solid #eeeeee' }} onClick={() => navigate('/citylist')}>
-                            {/* @ts-ignore */}
-                            <span className='text-[.875rem] text-[#666666] font-medium mr-1'>{curCity.label}</span>
-                            <i className='iconfont icon-arrow text-[#cccccc] text-[.75rem]'></i>
-                        </div>
-                        <div className='px-[.625rem] flex flex-row items-center' onClick={() => navigate('/search')}>
-                            <i className='iconfont icon-seach text-[#cccccc]'></i>
-                            <span className='text-[.875rem] text-[#cccccc]'>请输入小区或地址</span>
-                        </div>
-                    </div>
-                </div>
-                <div className='text-[#ffffff] h-full' onClick={() => navigate('/map')}>
-                    <i className='iconfont icon-map h-full text-[1.5rem]'></i>
-                </div>
-            </div>
+            <SearchNav></SearchNav>
             <div className='flex flex-row w-full justify-around px-[.625rem] mt-[.625rem]'>
                 {homeNavRender(navigate)}
             </div>
